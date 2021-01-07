@@ -69,8 +69,6 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, CustomPermissionsMixin):
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), unique=True,)
     is_staff = models.BooleanField(
         _('staff status'),
@@ -87,7 +85,6 @@ class User(AbstractBaseUser, CustomPermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     objects = UserManager()
 
@@ -102,8 +99,10 @@ class User(AbstractBaseUser, CustomPermissionsMixin):
 
 class Profile(models.Model):
     pass
-    # name            = models.CharField(max_length=50)
-    # surname         = models.CharField(max_length=50)
+    # first_name = models.CharField(_('first name'), max_length=30,
+    # blank=True)
+    # last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    # avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     # club_membership = models.ManyToManyField('clubs.Club')
     # roles           = models.ManyToManyField('Role')
     #

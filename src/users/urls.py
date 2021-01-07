@@ -1,9 +1,7 @@
 from django.urls import path
 
-from users.views import SignUpView
-# TODO: Rejestracja użytkownika wciąż pobiera dane z auth.User, napraw to.
-
+from .views import signup
 
 urlpatterns = [
-    path('signup/', SignUpView.as_view(), name='signup'),
+    path('signup/', signup, name='signup'),
 ]
