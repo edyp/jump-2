@@ -1,0 +1,7 @@
+# created by virtualenv automatically
+
+/bin/
+/lib/python3.8/site-packages/
+/pyvenv.cfg
+/.idea/codeStyles/codeStyleConfig.xml
+/src/db.sqlite3
