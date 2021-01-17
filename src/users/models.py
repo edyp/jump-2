@@ -3,6 +3,8 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin, Group, Permission
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class CustomPermissionsMixin(PermissionsMixin):
@@ -85,7 +87,6 @@ class User(AbstractBaseUser, CustomPermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-
     objects = UserManager()
 
     EMAIL_FIELD = 'email'
@@ -98,21 +99,22 @@ class User(AbstractBaseUser, CustomPermissionsMixin):
 
 
 class Profile(models.Model):
-    pass
-    # first_name = models.CharField(_('first name'), max_length=30,
-    # blank=True)
-    # last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    # avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    # club_membership = models.ManyToManyField('clubs.Club')
-    # roles           = models.ManyToManyField('Role')
-    #
-    # def __str__(self):
-    #     return ' '.join([self.name, self.surname])
+    user = models.OneToOneField('users.User', on_delete=models.CASCADE)
+    first_name      = models.CharField(_('first name'),
+                                       max_length=30,
+                                       blank=True)
+    last_name       = models.CharField(_('last name'),
+                                       max_length=30,
+                                       blank=True)
+    avatar          = models.ImageField(upload_to='users.avatars/',
+                                        null=True,
+                                        blank=True)
+    def __str__(self):
+        return ' '.join([self.first_name, self.last_name])
 
 
-class Role(models.Model):
-    pass
-    # name = models.CharField(max_length=50)
-    #
-    # def __str__(self):
-    #     return self.name
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()

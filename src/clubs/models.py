@@ -1,4 +1,21 @@
 from django.db import models
+from django.contrib.auth.models import Group, Permission
+
+
+def create_base_perm_group():
+    group, created = Group.objects.get_or_create(name='Basic Member')
+    existing_perms = Permission.objects.all()
+    greater_perms_contents = {'log entry',
+                              'deck arrangement',
+                              'group',
+                              'permission',
+                              'content type',
+                              'session'}
+    group_perms = []
+    for perm in existing_perms:
+        if perm.content_type.__str__() not in greater_perms_contents and 'view' in perm.name:
+            group_perms.append(perm)
+    group.permissions.set(group_perms)
 
 
 class Club(models.Model):
@@ -8,6 +25,11 @@ class Club(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self):
+        super(Club, self).save()
+
+        create_base_perm_group()
 
 
 class Ticket(models.Model):

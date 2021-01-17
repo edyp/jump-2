@@ -5,3 +5,9 @@
 /pyvenv.cfg
 /.idea/codeStyles/codeStyleConfig.xml
 /src/db.sqlite3
+/.idea/jump-2.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
