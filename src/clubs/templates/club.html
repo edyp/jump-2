@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Register your Aero-club{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}

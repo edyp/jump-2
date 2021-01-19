@@ -21,7 +21,7 @@ def create_base_perm_group():
 class Club(models.Model):
     name            = models.CharField(max_length=200)
     location        = models.CharField(max_length=200)
-    aircrafts       = models.ManyToManyField('aircrafts.Aircraft')
+    aircrafts       = models.ManyToManyField('aircrafts.Aircraft', blank=True)
 
     def __str__(self):
         return self.name
