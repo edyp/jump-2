@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Flights list{% endblock %}
+
+{% block content %}
+<form method="get" action="{% url 'flights-list' %}">
+    <label for="filter">Filter by date:</label>
+    <input type="text" value="{{filter}}" name="filter">
+    <label for="sort">Sort by column name</label>
+    <input type="text" value="{{sort}}" name="sort">
+    <input type="submit" value="Submit">
+</form>
+
+<h1>Flights</h1>
+{% if perms.manifest.flight_add %}
+<form action="{% url 'add-flight' %}">
+    <input type="submit" value="Add + " />
+</form>
+{% endif %}
+
+<p>Date | Seats left | Status</p>
+{% for flight in page_obj %}
+    {# Each "flight" is a Flight model object. #}
+    <p>{{ flight.date }} | {{ flight.available_seats }} | {{ flight.status }}</p>
+{% endfor %}
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

@@ -18,11 +18,15 @@ from django.urls import path, include
 
 from .views import home
 from clubs.views import register_club
+from manifest.views import FlightsListView, add_flight_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('users.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', home, name='home'),
-    path('club-registration/', register_club)
+    path('club-registration/', register_club),
+    path('flights/', FlightsListView.as_view(), name='flights-list'),
+    path('flights/add/', add_flight_view, name='add-flight')
 ]

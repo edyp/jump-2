@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Add flight{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ flight_add_form.as_p }}
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}
