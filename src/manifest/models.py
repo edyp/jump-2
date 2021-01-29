@@ -21,3 +21,10 @@ class Flight(models.Model):
                                         on_delete=models.PROTECT)
     available_seats = models.IntegerField(null=True)
     pilots          = models.ManyToManyField('users.User')
+
+    @property
+    def pilots_names(self):
+        names = []
+        for pilot in self.pilots.all():
+            names.append(pilot.profile.__str__())
+        return ', '.join(names)

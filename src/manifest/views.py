@@ -1,6 +1,8 @@
 from django.shortcuts import redirect, render
-from django.views.generic.list import ListView
+from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
+from django.views.generic.list import ListView
+from django.contrib.auth.decorators import login_required
 from .models import Flight
 from .forms import FlightAddForm
 
@@ -23,15 +25,19 @@ class FlightsListView(ListView):
         return context
 
 
+@login_required
 @require_http_methods(["GET", "POST"])
 def add_flight_view(request):
-    if request.method == 'POST':
-        form = FlightAddForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('flights-list')
+    if request.user.has_perm('manifest.flight_add'):
+        if request.method == 'POST':
+            form = FlightAddForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('flights-list')
+        else:
+            form = FlightAddForm()
+            args = {'flight_add_form': form}
     else:
-        form = FlightAddForm()
-        args = {'flight_add_form': form}
+        return redirect('flights-list')
     return render(request, 'add_flight.html', args)
 
