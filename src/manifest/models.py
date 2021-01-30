@@ -1,8 +1,11 @@
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils import timezone
 
 
 class Flight(models.Model):
+    order_number    = models.IntegerField(max_length=4, null=True, blank=True)
     date            = models.DateField(default=timezone.now().date())
     departure_time  = models.DateTimeField(default=None, null=True, blank=True)
     arrival_time    = models.DateTimeField(default=None, null=True, blank=True)
@@ -28,3 +31,12 @@ class Flight(models.Model):
         for pilot in self.pilots.all():
             names.append(pilot.profile.__str__())
         return ', '.join(names)
+
+
+@receiver(pre_save, sender=Flight)
+def assign_flight_number(sender, instance, *args, **kwargs):
+    '''Every flight should have order number for simpler recognition.
+    Count and assign order number to flight before saving.'''
+    if instance.order_number is None:
+        preceding_flights_number = Flight.objects.filter(date=instance.date).count()
+        instance.order_number = preceding_flights_number + 1

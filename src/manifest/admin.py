@@ -4,6 +4,11 @@ from .models import Flight
 
 
 class FlightAdmin(admin.ModelAdmin):
-    list_display = ['date', 'status', 'available_seats', 'pilots_names']
+    list_display = ['order_number',
+                    'date',
+                    'status',
+                    'available_seats',
+                    'pilots_names']
+
 
 admin.site.register(Flight, FlightAdmin)

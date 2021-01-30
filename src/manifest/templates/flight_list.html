@@ -18,10 +18,10 @@
 </form>
 {% endif %}
 
-<p>Date | Seats left | Status</p>
+<p>No | Date | Available seats | Status</p>
 {% for flight in page_obj %}
     {# Each "flight" is a Flight model object. #}
-    <p>{{ flight.date }} | {{ flight.available_seats }} | {{ flight.status }}</p>
+    <p>{{flight.order_number}} | {{ flight.date }} | {{ flight.available_seats }} | {{ flight.status }}</p>
 {% endfor %}
 
 
