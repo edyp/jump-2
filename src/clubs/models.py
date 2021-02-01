@@ -49,7 +49,7 @@ class Ticket(models.Model):
     DEFAULT_FLIGHT_HEIGHTS = [('4000', 4000), ('2000', 2000), ('1000', 1000)]
     exit_height            = models.CharField(max_length=5,
                                               choices=DEFAULT_FLIGHT_HEIGHTS,
-                                              blank=True)
+                                              default='4000')
     price                  = models.DecimalField(max_digits=20,
                                                  decimal_places=2,
                                                  blank=True,

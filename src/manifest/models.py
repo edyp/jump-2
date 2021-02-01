@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class Flight(models.Model):
     order_number    = models.IntegerField(max_length=4, null=True, blank=True)
-    date            = models.DateField(default=timezone.now().date())
+    date            = models.DateField(max_length=10, default=timezone.now().date())
     departure_time  = models.DateTimeField(default=None, null=True, blank=True)
     arrival_time    = models.DateTimeField(default=None, null=True, blank=True)
     FLIGHT_STATUSES = [
@@ -31,6 +31,11 @@ class Flight(models.Model):
         for pilot in self.pilots.all():
             names.append(pilot.profile.__str__())
         return ', '.join(names)
+
+    @property
+    def seats_left(self):
+        sold_tickets = self.ticket_set.all().count()
+        return self.available_seats - sold_tickets
 
 
 @receiver(pre_save, sender=Flight)

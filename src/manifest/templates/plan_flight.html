@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %} Sell ticket {% endblock %}
+
+{% block content %}
+<h1>{{ related_flight.date|date:"Y-m-d" }} FLIGHT No. {{ related_flight.order_number }}</h1>
+<h3>Plan flight</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ ticket_add_form.as_p }}
+    <button type="submit">Save changes</button>
+</form>
+{% endblock %}

@@ -1,5 +1,4 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
@@ -10,11 +9,11 @@ from .forms import FlightAddForm
 class FlightsListView(ListView):
 
     model = Flight
-    paginate_by = 2
-    template_name = 'flight_list.html'
+    paginate_by = 10
+    template_name = 'flights_list.html'
 
     def get_context_data(self, **kwargs):
-        sort_val = self.request.GET.get('sort', 'date')
+        sort_val = self.request.GET.get('sort', '-date')
         filter_val = self.request.GET.get('filter', '')
         all_flights_qs = super().get_queryset().order_by(sort_val)
         if filter_val:
@@ -33,11 +32,10 @@ def add_flight_view(request):
             form = FlightAddForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('flights-list')
+                return redirect('flights_list')
         else:
             form = FlightAddForm()
             args = {'flight_add_form': form}
     else:
-        return redirect('flights-list')
+        return redirect('flights_list')
     return render(request, 'add_flight.html', args)
-
