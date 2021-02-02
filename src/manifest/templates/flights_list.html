@@ -27,13 +27,15 @@
     </tr>
     {% for flight in page_obj %}
     {# Each "flight" is a Flight model object. #}
-        <tr style="background-color:lightgrey">
+        <tr style="background-color:lightgrey{% if flight.seats_left == 0 %}; color: green{% endif %}" >
             <td>{{ flight.order_number }}</td>
             <td>{{ flight.date|date:"Y-m-d" }}</td>
             <td>{{ flight.seats_left }}</td>
             <td>{{ flight.status }}</td>
             <td>
-                <a href="{% url 'plan_flight' flight.id %}">PLAN</a>
+            {% if flight.seats_left > 0 %}
+                <a href="{% url 'plan_flight' flight.id %}">SELL</a>
+            {% endif %}
             </td>
         </tr>
         {% if flight.ticket_set.all|length > 0 %}

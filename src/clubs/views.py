@@ -37,10 +37,13 @@ def plan_flight_view(request, pk):
                 form.save()
                 return redirect('flights_list')
         else:
-            form_ticket = TicketForm(prefix='form_ticket',
-                                     initial=initial_data)
-            args = {'related_flight': related_flight,
-                    'ticket_add_form': form_ticket}
+            if related_flight.seats_left > 0:
+                form_ticket = TicketForm(prefix='form_ticket',
+                                         initial=initial_data)
+                args = {'related_flight': related_flight,
+                        'ticket_add_form': form_ticket}
+            else:
+                return redirect('flights_list')
     else:
         return redirect('flights_list')
     return render(request, 'plan_flight.html', args)
