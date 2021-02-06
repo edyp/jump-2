@@ -1,9 +1,14 @@
-from django.shortcuts import render, redirect
+"""Beside registering club view other views are related to ticket management
+around specific flight, because Club model is used only by Flight model in this
+app version then dispatching is done from flights.urls module.
+"""
+
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 
 from .forms import ClubForm, TicketForm
-from .models import Club
+from .models import Club, Ticket
 from manifest.models import Flight
 
 
@@ -47,3 +52,36 @@ def plan_flight_view(request, pk):
     else:
         return redirect('flights_list')
     return render(request, 'plan_flight.html', args)
+
+
+@login_required
+@require_http_methods(["POST"])
+def unplan_flight_view(request, pk):
+    # TODO: enclose in try except...
+    if request.user.has_perm('manifest.flight_delete', 'clubs.ticket_delete')\
+            and request.method == "POST":
+        related_flight = get_object_or_404(Flight, id=pk)
+        _reorder_flights_after(related_flight)
+        related_flight.delete()
+        return redirect('flights_list')
+    else:
+        return redirect('flights_list')
+
+
+def _reorder_flights_after(given_flight: Flight):
+    flights_at_date = Flight.objects.filter(date=given_flight.date).order_by('order_number')
+    for flight in flights_at_date:
+        if flight.order_number > given_flight.order_number:
+            flight.order_number -= 1
+            flight.save()
+
+
+@login_required
+@require_http_methods(["POST"])
+def cancel_ticket_view(request, pk):
+    if request.user.has_perm('clubs.ticket_delete') and request.method == "POST":
+        related_ticket = get_object_or_404(Ticket, id=pk)
+        related_ticket.delete()
+        return redirect('flights_list')
+    else:
+        return redirect('flights_list')

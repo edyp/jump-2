@@ -3,18 +3,18 @@
 {% block title %}Flights list{% endblock %}
 
 {% block content %}
-<form method="get" action="{% url 'flights_list' %}">
+<form method="get" action="{% url 'flights_list' %}" xmlns="http://www.w3.org/1999/html">
     <label for="filter">Filter by date:</label>
     <input id="filter" type="text" value="{{filter}}" name="filter">
     <label for="sort">Sort by column name</label>
     <input id="sort" type="text" value="{{sort}}" name="sort">
-    <input type="submit" value="Submit">
+    <button type="submit">Submit</button>
 </form>
 
 <h1>Flights</h1>
 {% if perms.manifest.flight_add %}
 <form action="{% url 'add_flight' %}">
-    <input type="submit" value="Schedule flight + " />
+    <button type="submit">Schedule flight +</button>
 </form>
 {% endif %}
 <table border="1" width="50%" cellpadding="4" cellspacing="0" style="background-color:lightblue">
@@ -23,7 +23,9 @@
         <th>Date</th>
         <th>Available seats</th>
         <th>Status</th>
-        <th>Actions</th>
+        {% if perms.clubs.ticket_add %}
+            <th colspan="2">Actions</th>
+        {% endif %}
     </tr>
     {% for flight in page_obj %}
     {# Each "flight" is a Flight model object. #}
@@ -32,26 +34,57 @@
             <td>{{ flight.date|date:"Y-m-d" }}</td>
             <td>{{ flight.seats_left }}</td>
             <td>{{ flight.status }}</td>
-            <td>
-            {% if flight.seats_left > 0 %}
-                <a href="{% url 'plan_flight' flight.id %}">SELL</a>
+            {% if perms.clubs.ticket_add or perms.clubs.ticket_delete %}
+                <td colspan="2">
+                {% if flight.seats_left > 0 and perms.clubs.ticket_add %}
+                    <form action="{% url 'plan_flight' flight.id %}">
+                        <button type="submit" style="background-color:lightgreen">SELL SOLO TICKET</button>
+                    </form>
+                {% else %}
+                    <b>READY!</b>
+                {% endif %}
+                {% if perms.clubs.ticket_delete %}
+                    <form method="post"
+                          onsubmit="return confirm('Do you really want to unplan the flight {{ flight }} and all tickets?');"
+                          action="{% url 'unplan_flight' flight.id %}">
+                        {% csrf_token %}
+                        <button type="submit" style="background-color:tomato">UNPLAN FLIGHT</button>
+                    </form>
+                {% endif %}
+                </td>
             {% endif %}
-            </td>
         </tr>
-        {% if flight.ticket_set.all|length > 0 %}
+        {% if flight.ticket_set.all|length > 0 and user.is_authenticated %}
         <tr >
             <td rowspan={{ flight.ticket_set.all|length|add:1 }}>Tickets</td>
             <th>Name</th>
             <th>Parachute</th>
             <th>Exit height</th>
-            <th>Price</th>
+            {% if perms.clubs.ticket_add %}
+                <th>Price</th>
+            {% endif %}
+            {% if perms.clubs.ticket_delete %}
+                <th>Actions</th>
+            {% endif %}
         </tr>
         {% for ticket in flight.ticket_set.all %}
             <tr >
                 <td>{{ ticket.bought_by.profile }}</td>
                 <td>{{ ticket.luggage }}</td>
                 <td>{{ ticket.exit_height }}</td>
-                <td>{{ ticket.price }}</td>
+                {% if perms.clubs.ticket_add %}
+                    <td>{{ ticket.price }}</td>
+                {% endif %}
+                {% if perms.clubs.ticket_delete %}
+                    <td>
+                        <form method="post"
+                          onsubmit="return confirm('Do you really want to cancel the {{ ticket.bought_by.profile }}'s ticket in flight {{ flight }}?');"
+                          action="{% url 'cancel_ticket' ticket.id %}">
+                        {% csrf_token %}
+                        <button type="submit" style="background-color:tomato">CANCELLATION</button>
+                        </form>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         {% endif %}

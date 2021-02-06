@@ -43,7 +43,7 @@ class Ticket(models.Model):
                                                null=True,
                                                blank=True)
     flights                = models.ForeignKey('manifest.Flight',
-                                               on_delete=models.PROTECT,
+                                               on_delete=models.CASCADE,
                                                null=True,
                                                blank=True)
     DEFAULT_FLIGHT_HEIGHTS = [('4000', 4000), ('2000', 2000), ('1000', 1000)]

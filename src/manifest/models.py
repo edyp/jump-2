@@ -5,7 +5,7 @@ from django.utils import timezone
 
 
 class Flight(models.Model):
-    order_number    = models.IntegerField(max_length=4, null=True, blank=True)
+    order_number    = models.IntegerField(null=True, blank=True)
     date            = models.DateField(max_length=10, default=timezone.now().date())
     departure_time  = models.DateTimeField(default=None, null=True, blank=True)
     arrival_time    = models.DateTimeField(default=None, null=True, blank=True)
@@ -36,6 +36,9 @@ class Flight(models.Model):
     def seats_left(self):
         sold_tickets = self.ticket_set.all().count()
         return self.available_seats - sold_tickets
+
+    def __str__(self):
+        return f'{str(self.date)}/{self.order_number}'
 
 
 @receiver(pre_save, sender=Flight)
