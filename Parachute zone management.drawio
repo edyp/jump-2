@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-02-06T16:33:50.405Z" agent="5.0 (X11)" etag="NXO8_xTS4iZihX5jmA5C" version="14.1.8" type="github">
+<mxfile host="app.diagrams.net" modified="2021-02-07T16:10:41.268Z" agent="5.0 (X11)" etag="eJe0tLjHQ4V_DuC3LsF-" version="14.1.8" type="github">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
-    <mxGraphModel dx="1125" dy="646" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
+    <mxGraphModel dx="1350" dy="775" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -17,7 +17,7 @@
           <mxGeometry y="86" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="WWUrrks8_BlSyIQBUB3q-43" value="clubs_ticket" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="470" y="660" width="160" height="176" as="geometry" />
+          <mxGeometry x="470" y="660" width="160" height="206" as="geometry" />
         </mxCell>
         <mxCell id="WWUrrks8_BlSyIQBUB3q-44" value="bought_by" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;" vertex="1" parent="WWUrrks8_BlSyIQBUB3q-43">
           <mxGeometry y="26" width="160" height="30" as="geometry" />
@@ -33,6 +33,9 @@
         </mxCell>
         <mxCell id="WWUrrks8_BlSyIQBUB3q-48" value="price" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;" vertex="1" parent="WWUrrks8_BlSyIQBUB3q-43">
           <mxGeometry y="146" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="WWUrrks8_BlSyIQBUB3q-111" value="notes" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;" vertex="1" parent="WWUrrks8_BlSyIQBUB3q-43">
+          <mxGeometry y="176" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="WWUrrks8_BlSyIQBUB3q-104" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;strokeColor=#00FF00;" edge="1" parent="1" source="WWUrrks8_BlSyIQBUB3q-49" target="WWUrrks8_BlSyIQBUB3q-46">
           <mxGeometry relative="1" as="geometry" />
@@ -80,7 +83,7 @@
           <mxGeometry y="86" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="WWUrrks8_BlSyIQBUB3q-63" value="aircrafts_deckarrangement" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="20" y="244" width="190" height="86" as="geometry" />
+          <mxGeometry x="10" y="244" width="190" height="86" as="geometry" />
         </mxCell>
         <mxCell id="WWUrrks8_BlSyIQBUB3q-64" value="max_pilot_seats" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;" vertex="1" parent="WWUrrks8_BlSyIQBUB3q-63">
           <mxGeometry y="26" width="190" height="30" as="geometry" />
