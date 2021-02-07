@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.profile }} jumps{% endblock %}
+
+{% block content %}
+    <h1>{{ user.profile }} jumps</h1>
+    <table border="1" width="50%" cellpadding="4" cellspacing="0" style="background-color:lightgrey">
+        <tr>
+            <th>FLIGHT</th>
+            <th>PARACHUTE</th>
+            <th>HEIGHT</th>
+            <th>PRICE</th>
+            <th>NOTES</th>
+        </tr>
+        {% for ticket in page_obj %}
+            <tr>
+                <td>{{ ticket.flight }}</td>
+                <td>{{ ticket.luggage }}</td>
+                <td>{{ ticket.exit_height }}</td>
+                <td>{{ ticket.price }}</td>
+                <td>
+                    <form method="post" action="{% url 'add_note' ticket.id %}">
+                        {% csrf_token %}
+                        <textarea id="notes" name="notes" rows="4" cols="50">{{ ticket.notes }}</textarea>
+                        <button type="submit" style="background-color:lightgreen">Save</button>
+                        <button type="button" onclick="document.getElementById('notes').value = ''" style="background-color:tomato">Clear</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th colspan="5">Your spends in total: {{ total_spend }}</th>
+        </tr>
+    </table>
+    {% include 'pagination_controls.html' %}
+{% endblock %}

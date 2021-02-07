@@ -1,0 +1,32 @@
+<tr>
+    <td rowspan={{ flight.ticket_set.all|length|add:1 }}>Tickets</td>
+    <th>Name</th>
+    <th>Parachute</th>
+    <th>Exit height</th>
+    {% if perms.clubs.ticket_add %}
+        <th>Price</th>
+    {% endif %}
+    {% if perms.clubs.ticket_delete %}
+        <th>Actions</th>
+    {% endif %}
+</tr>
+{% for ticket in flight.ticket_set.all %}
+    <tr >
+        <td>{{ ticket.bought_by.profile }}</td>
+        <td>{{ ticket.luggage }}</td>
+        <td>{{ ticket.exit_height }}</td>
+        {% if perms.clubs.ticket_add %}
+            <td>{{ ticket.price }}</td>
+        {% endif %}
+        {% if perms.clubs.ticket_delete %}
+            <td>
+                <form method="post"
+                  onsubmit="return confirm('Do you really want to cancel the {{ ticket.bought_by.profile }}'s ticket in flight {{ flight }}?');"
+                  action="{% url 'cancel_ticket' ticket.id %}">
+                {% csrf_token %}
+                <button type="submit" style="background-color:tomato">CANCEL</button>
+                </form>
+            </td>
+        {% endif %}
+    </tr>
+{% endfor %}

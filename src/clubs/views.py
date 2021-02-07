@@ -38,7 +38,7 @@ def plan_flight_view(request, pk):
             form_ticket = TicketForm(request.POST, prefix='form_ticket')
             if form_ticket.is_valid():
                 form = form_ticket.save(commit=False)
-                form.flights = related_flight
+                form.flight = related_flight
                 form.save()
                 return redirect('flights_list')
         else:

@@ -42,7 +42,7 @@ class Ticket(models.Model):
                                                on_delete=models.PROTECT,
                                                null=True,
                                                blank=True)
-    flights                = models.ForeignKey('manifest.Flight',
+    flight                = models.ForeignKey('manifest.Flight',
                                                on_delete=models.CASCADE,
                                                null=True,
                                                blank=True)
@@ -54,6 +54,9 @@ class Ticket(models.Model):
                                                  decimal_places=2,
                                                  blank=True,
                                                  default=0.00)
+    notes                  = models.TextField(max_length=1500,
+                                              blank=True,
+                                              default='')
 
 
 @receiver(pre_save, sender=Ticket)

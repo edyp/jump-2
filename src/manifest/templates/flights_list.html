@@ -3,7 +3,7 @@
 {% block title %}Flights list{% endblock %}
 
 {% block content %}
-<form method="get" action="{% url 'flights_list' %}" xmlns="http://www.w3.org/1999/html">
+<form method="get" action="{% url 'flights_list' %}">
     <label for="filter">Filter by date:</label>
     <input id="filter" type="text" value="{{filter}}" name="filter">
     <label for="sort">Sort by column name</label>
@@ -28,7 +28,6 @@
         {% endif %}
     </tr>
     {% for flight in page_obj %}
-    {# Each "flight" is a Flight model object. #}
         <tr style="background-color:lightgrey{% if flight.seats_left == 0 %}; color: green{% endif %}" >
             <td>{{ flight.order_number }}</td>
             <td>{{ flight.date|date:"Y-m-d" }}</td>
@@ -48,65 +47,16 @@
                           onsubmit="return confirm('Do you really want to unplan the flight {{ flight }} and all tickets?');"
                           action="{% url 'unplan_flight' flight.id %}">
                         {% csrf_token %}
-                        <button type="submit" style="background-color:tomato">UNPLAN FLIGHT</button>
+                        <button type="submit" style="background-color:tomato">CANCEL FLIGHT</button>
                     </form>
                 {% endif %}
                 </td>
             {% endif %}
         </tr>
         {% if flight.ticket_set.all|length > 0 and user.is_authenticated %}
-        <tr >
-            <td rowspan={{ flight.ticket_set.all|length|add:1 }}>Tickets</td>
-            <th>Name</th>
-            <th>Parachute</th>
-            <th>Exit height</th>
-            {% if perms.clubs.ticket_add %}
-                <th>Price</th>
-            {% endif %}
-            {% if perms.clubs.ticket_delete %}
-                <th>Actions</th>
-            {% endif %}
-        </tr>
-        {% for ticket in flight.ticket_set.all %}
-            <tr >
-                <td>{{ ticket.bought_by.profile }}</td>
-                <td>{{ ticket.luggage }}</td>
-                <td>{{ ticket.exit_height }}</td>
-                {% if perms.clubs.ticket_add %}
-                    <td>{{ ticket.price }}</td>
-                {% endif %}
-                {% if perms.clubs.ticket_delete %}
-                    <td>
-                        <form method="post"
-                          onsubmit="return confirm('Do you really want to cancel the {{ ticket.bought_by.profile }}'s ticket in flight {{ flight }}?');"
-                          action="{% url 'cancel_ticket' ticket.id %}">
-                        {% csrf_token %}
-                        <button type="submit" style="background-color:tomato">CANCELLATION</button>
-                        </form>
-                    </td>
-                {% endif %}
-            </tr>
-        {% endfor %}
+            {% include 'tickets_list.html' %}
         {% endif %}
 {% endfor %}
 </table>
-
-
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
+{% include 'pagination_controls.html' %}
 {% endblock %}

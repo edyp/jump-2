@@ -4,7 +4,7 @@ from .models import Club, Ticket
 
 
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ['bought_by', 'luggage', 'flights', 'exit_height', 'price']
+    list_display = ['bought_by', 'luggage', 'flight', 'exit_height', 'price']
 
 
 admin.site.register(Club)
